@@ -67,10 +67,12 @@ int64 RndUnigramInt(TIntV& KTable, TFltV& UTable, TRnd& Rnd) {
     TInt XX = static_cast<int64>(Rnd.GetUniDev()*KTable.Len());
     if (XX < 0) {
         XX = 0;
+        abort();
     }
     if (XX >= KTable.Len()) {
         XX  = KTable.Len() -1;
         XX -= 1;
+        abort();
     }
     
   TInt X = KTable[XX];
