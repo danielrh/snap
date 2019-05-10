@@ -64,7 +64,16 @@ void InitUnigramTable(TIntV& Vocab, TIntV& KTable, TFltV& UTable) {
 }
 
 int64 RndUnigramInt(TIntV& KTable, TFltV& UTable, TRnd& Rnd) {
-  TInt X = KTable[static_cast<int64>(Rnd.GetUniDev()*KTable.Len())];
+    TInt XX = static_cast<int64>(Rnd.GetUniDev()*KTable.Len());
+    if (XX < 0) {
+        XX = 0;
+    }
+    if (XX >= KTable.Len()) {
+        XX  = KTable.Len() -1;
+        XX -= 1;
+    }
+    
+  TInt X = KTable[XX];
   double Y = Rnd.GetUniDev();
   return Y < UTable[X] ? X : KTable[X];
 }

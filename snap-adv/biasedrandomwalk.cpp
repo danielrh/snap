@@ -51,6 +51,13 @@ void GetNodeAlias(TFltV& PTblV, TIntVFltVPr& NTTable) {
 int64 AliasDrawInt(TIntVFltVPr& NTTable, TRnd& Rnd) {
   int64 N = NTTable.GetVal1().Len();
   TInt X = static_cast<int64>(Rnd.GetUniDev()*N);
+  if (X < 0) {
+          X = 0;
+  }
+  if (X >= N) {
+          X  = N;
+          X -= 1;
+  }
   double Y = Rnd.GetUniDev();
   return Y < NTTable.GetVal2()[X] ? X : NTTable.GetVal1()[X];
 }
