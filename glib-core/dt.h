@@ -26,7 +26,7 @@ public:
     TRnd& operator=(const TRnd& Rnd){gen=Rnd.gen; dis=Rnd.dis;return *this;}
   bool operator==(const TRnd&) const {Fail; return false;}
 
-    double GetUniDev(){abort();return dis(gen);}
+    double GetUniDev(){return dis(gen);}
   int GetUniDevInt(const int& Range=0);
   int GetUniDevInt(const int& MnVal, const int& MxVal){
     IAssert(MnVal<=MxVal); return MnVal+GetUniDevInt(MxVal-MnVal+1);}
