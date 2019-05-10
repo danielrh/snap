@@ -1,5 +1,7 @@
 /////////////////////////////////////////////////
 // Address-Pointer
+#include <algorithm>
+
 template <class TRec>
 class TAPt{
 private:
@@ -1238,7 +1240,8 @@ bool TVec<TVal, TSizeTy>::IsSorted(const bool& Asc) const {
 
 template <class TVal, class TSizeTy>
 void TVec<TVal, TSizeTy>::Shuffle(TRnd& Rnd){
-  if (Len() < TInt::Mx) {
+    std::shuffle(ValT, ValT+Len(), Rnd.gen);
+/*  if (Len() < TInt::Mx) {
     for (TSizeTy ValN=0; ValN<Vals-1; ValN++){
       const int Range = int(Vals-ValN);
       Swap(ValN, ValN+Rnd.GetUniDevInt(Range));
@@ -1248,7 +1251,7 @@ void TVec<TVal, TSizeTy>::Shuffle(TRnd& Rnd){
       const TSizeTy Range = Vals-ValN;
       Swap(ValN, TSizeTy(ValN+Rnd.GetUniDevInt64(Range)));
     }
-  }
+    }*/
 }
 
 template <class TVal, class TSizeTy>
