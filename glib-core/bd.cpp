@@ -6,12 +6,14 @@
 // Mathmatical-Errors
 #if defined(__BCPLUSPLUS__) && (__BCPLUSPLUS__==0x0530)
 int std::_matherr(struct math_exception* e){
-  e->retval=0;
+    abort()
+    //e->retval=0;
   return 1;
 }
 #elif defined(GLib_GLIBC) || defined(GLib_BSD)
 int _matherr(struct __exception* e){
-  e->retval=0;
+    //e->retval=0;
+    abort();
   return 1;
 }
 #elif defined(GLib_SOLARIS)
