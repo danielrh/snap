@@ -1,5 +1,5 @@
 #include "bd.h"
-
+#include <random>
 /////////////////////////////////////////////////
 // Forward
 class TILx;
@@ -11,23 +11,22 @@ ClassHdTP(TXmlTok, PXmlTok);
 class TRnd{
 public:
   static const int RndSeed;
+    static const int m;
 private:
-  static const int a, m, q, r;
-  int Seed;
-  int GetNextSeed(){
-    if ((Seed=a*(Seed%q)-r*(Seed/q))>0){return Seed;} else {return Seed+=m;}}
 public:
-  TRnd(const int& _Seed=1, const int& Steps=0){
+    std::mt19937 gen; //Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis;
+    TRnd(const int& _Seed=1, const int& Steps=0):dis(0.0,1.0) {
     PutSeed(_Seed); Move(Steps);}
-  explicit TRnd(TSIn& SIn){SIn.Load(Seed);}
-  void Save(TSOut& SOut) const {SOut.Save(Seed);}
+    explicit TRnd(TSIn& SIn){int32_t Seed; SIn.Load(Seed);gen.seed(Seed);}
+    void Save(TSOut& SOut) const {abort();/*SOut.Save(Seed);*/}
   void LoadXml(const PXmlTok& XmlTok, const TStr& Nm);
   void SaveXml(TSOut& SOut, const TStr& Nm) const;
 
-  TRnd& operator=(const TRnd& Rnd){Seed=Rnd.Seed; return *this;}
+    TRnd& operator=(const TRnd& Rnd){gen=Rnd.gen; dis=Rnd.dis;return *this;}
   bool operator==(const TRnd&) const {Fail; return false;}
 
-  double GetUniDev(){return GetNextSeed()/double(m);}
+    double GetUniDev(){abort();return dis(gen);}
   int GetUniDevInt(const int& Range=0);
   int GetUniDevInt(const int& MnVal, const int& MxVal){
     IAssert(MnVal<=MxVal); return MnVal+GetUniDevInt(MxVal-MnVal+1);}
@@ -56,7 +55,7 @@ public:
   //void GetSphereDev(const int& Dim, TFltV& ValV);
 
   void PutSeed(const int& _Seed);
-  int GetSeed() const {return Seed;}
+//  int GetSeed() const {return Seed;}
   void Randomize(){PutSeed(RndSeed);}
   void Move(const int& Steps);
   bool Check();

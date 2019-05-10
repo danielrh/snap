@@ -1,3 +1,4 @@
+#include <math.h>
 #if SW_TRACE
 #include <execinfo.h>
 #endif

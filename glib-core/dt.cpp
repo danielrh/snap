@@ -1,51 +1,49 @@
 /////////////////////////////////////////////////
 // Random
 const int TRnd::RndSeed=0;
-const int TRnd::a=16807;
+//const int TRnd::a=16807;
 const int TRnd::m=2147483647;
-const int TRnd::q=127773; // m DIV a
-const int TRnd::r=2836; // m MOD a
+//const int TRnd::q=127773; // m DIV a
+//const int TRnd::r=2836; // m MOD a
 
 void TRnd::LoadXml(const PXmlTok& XmlTok, const TStr& Nm){
   XLoadHd(Nm);
-  Seed=TXmlObjSer::GetIntArg(XmlTok, "Seed");
+  gen.seed(TXmlObjSer::GetIntArg(XmlTok, "Seed"));
 }
 
 void TRnd::SaveXml(TSOut& SOut, const TStr& Nm) const {
-  XSaveBETagArg(Nm, "Seed", TInt::GetStr(Seed));
+    abort();/*  XSaveBETagArg(Nm, "Seed", TInt::GetStr(Seed));*/
 }
 
 void TRnd::PutSeed(const int& _Seed){
   Assert(_Seed>=0);
-  if (_Seed==0){
-    //Seed=int(time(NULL));
-    Seed=abs(int(TSysTm::GetPerfTimerTicks()));
-  } else {
-    Seed=_Seed;
-    //Seed=abs(_Seed*100000)+1;
-  }
+  gen.seed(_Seed);
 }
 
 void TRnd::Move(const int& Steps){
-  for (int StepN=0; StepN<Steps; StepN++){GetNextSeed();}
+    for (int StepN=0; StepN<Steps; StepN++){dis(gen);}
 }
 
 bool TRnd::Check(){
-  int PSeed=Seed; Seed=1;
-  for (int SeedN=0; SeedN<10000; SeedN++){GetNextSeed();}
-  bool Ok=Seed==1043618065; Seed=PSeed; return Ok;
+    return true;
 }
 
 int TRnd::GetUniDevInt(const int& Range){
-  int Seed=GetNextSeed();
-  if (Range==0){return Seed;}
-  else {return Seed%Range;}
+  int range = Range;
+  if (Range == 0) {
+      range = m;
+  }
+  std::uniform_int_distribution<int> uni(0,range);
+  return uni(gen);
 }
 
 uint TRnd::GetUniDevUInt(const uint& Range){
-  uint Seed=uint(GetNextSeed()%0x10000)*0x10000+uint(GetNextSeed()%0x10000);
-  if (Range==0){return Seed;}
-  else {return Seed%Range;}
+  uint range = Range;
+  if (Range == 0) {
+      range = m;
+  }
+  std::uniform_int_distribution<uint> uni(0,range);
+  return uni(gen);
 }
 
 int64 TRnd::GetUniDevInt64(const int64& Range){
@@ -217,7 +215,8 @@ TRnd TRnd::LoadTxt(TILx& Lx){
 }
 
 void TRnd::SaveTxt(TOLx& Lx) const {
-  Lx.PutInt(Seed);
+    abort();
+//  Lx.PutInt(Seed);
 }
 
 /////////////////////////////////////////////////
@@ -240,8 +239,10 @@ TMem::TMem(const TStr& Str):
 }
 
 void TMem::SaveXml(TSOut& SOut, const TStr& Nm) const {
+    abort(); /*
   XSaveHdArg(Nm, "BfL", TInt::GetStr(BfL));
   SOut.PutStr(TXmlLx::GetXmlStrFromPlainMem(*this));
+             */
 }
 
 bool TMem::DoFitStr(const TStr& Str) const {
