@@ -29,22 +29,17 @@ bool TRnd::Check(){
 }
 
 int TRnd::GetUniDevInt(const int& Range){
-  int range = Range;
   if (Range == 0) {
-      range = m;
+      return std::uniform_int_distribution<int>(0,m)(gen);
   }
-  std::uniform_int_distribution<int> uni(0,range);
-  return uni(gen);
+  return std::uniform_int_distribution<int>(0,Range - 1)(gen);
 }
 
 uint TRnd::GetUniDevUInt(const uint& Range){
-  uint64 range = Range;
   if (Range == 0) {
-      range = 1L<<31;
-      range <<= 31;
+      return std::uniform_int_distribution<uint>(0,0xffffffff)(gen);
   }
-  std::uniform_int_distribution<uint64> uni(0,range);
-  return uint(uni(gen));
+  return std::uniform_int_distribution<int>(0,Range - 1)(gen);
 }
 
 int64 TRnd::GetUniDevInt64(const int64& Range){
