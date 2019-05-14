@@ -38,12 +38,13 @@ int TRnd::GetUniDevInt(const int& Range){
 }
 
 uint TRnd::GetUniDevUInt(const uint& Range){
-  uint range = Range;
+  uint64 range = Range;
   if (Range == 0) {
-      range = m;
+      range = 1L<<31;
+      range <<= 31;
   }
-  std::uniform_int_distribution<uint> uni(0,range);
-  return uni(gen);
+  std::uniform_int_distribution<uint64> uni(0,range);
+  return uint(uni(gen));
 }
 
 int64 TRnd::GetUniDevInt64(const int64& Range){
